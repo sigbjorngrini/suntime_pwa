@@ -25,6 +25,19 @@
                 </button>
             </div>
             
+            <div id="manual-location-form" class="manual-location-form" style="display: none;">
+                <h3>Enter Location Manually</h3>
+                <div class="form-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="number" id="latitude" step="0.0001" placeholder="e.g. 40.7128">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude:</label>
+                    <input type="number" id="longitude" step="0.0001" placeholder="e.g. -74.0060">
+                </div>
+                <button id="submit-location" type="button">Calculate</button>
+            </div>
+            
             <div class="card-container">
                 <div class="card sunrise">
                     <div class="card-icon">🌅</div>

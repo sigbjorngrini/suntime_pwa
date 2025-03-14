@@ -14,6 +14,10 @@ const sunriseInfoElement = document.getElementById('sunrise-info');
 const sunsetInfoElement = document.getElementById('sunset-info');
 const dayLengthElement = document.getElementById('day-length');
 const installButton = document.getElementById('install-button');
+const manualLocationForm = document.getElementById('manual-location-form');
+const latitudeInput = document.getElementById('latitude');
+const longitudeInput = document.getElementById('longitude');
+const submitLocationButton = document.getElementById('submit-location');
 
 // Initialize the application
 async function initApp() {
@@ -53,6 +57,9 @@ async function initApp() {
 function setupEventListeners() {
     refreshLocationButton.addEventListener('click', getLocation);
     
+    // Manual location submission
+    submitLocationButton.addEventListener('click', handleManualLocationSubmit);
+    
     // PWA installation
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
@@ -68,6 +75,51 @@ function setupEventListeners() {
         deferredPrompt = null;
         installButton.style.display = 'none';
     });
+}
+
+// Handle manual location submission
+async function handleManualLocationSubmit() {
+    const latitude = parseFloat(latitudeInput.value);
+    const longitude = parseFloat(longitudeInput.value);
+    
+    // Validate inputs
+    if (isNaN(latitude) || isNaN(longitude)) {
+        showError('Please enter valid latitude and longitude values');
+        return;
+    }
+    
+    if (latitude < -90 || latitude > 90) {
+        showError('Latitude must be between -90 and 90 degrees');
+        return;
+    }
+    
+    if (longitude < -180 || longitude > 180) {
+        showError('Longitude must be between -180 and 180 degrees');
+        return;
+    }
+    
+    try {
+        // Display coordinates
+        locationDisplay.textContent = `${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°`;
+        
+        // Call Python function to calculate sun times
+        const result = await pyodide.runPythonAsync(`
+            calculate_sun_times(${latitude}, ${longitude})
+        `);
+        
+        // Parse the result
+        const sunData = JSON.parse(result);
+        
+        // Update UI with sun data
+        updateSunUI(sunData);
+        
+        // Hide error message if any
+        errorMessageElement.style.display = 'none';
+        
+    } catch (error) {
+        console.error('Error processing manual location data:', error);
+        showError('Failed to calculate sun times. Please try again.');
+    }
 }
 
 // Get user's location
@@ -122,19 +174,22 @@ function handleLocationError(error) {
     let errorMsg;
     switch(error.code) {
         case error.PERMISSION_DENIED:
-            errorMsg = 'Location access denied. Please enable location services.';
+            errorMsg = 'Location access denied. Please enable location services or enter coordinates manually.';
             break;
         case error.POSITION_UNAVAILABLE:
-            errorMsg = 'Location information is unavailable.';
+            errorMsg = 'Location information is unavailable. Please enter coordinates manually.';
             break;
         case error.TIMEOUT:
-            errorMsg = 'Location request timed out.';
+            errorMsg = 'Location request timed out. Please enter coordinates manually.';
             break;
         default:
-            errorMsg = 'An unknown error occurred while getting location.';
+            errorMsg = 'An unknown error occurred while getting location. Please enter coordinates manually.';
     }
     showError(errorMsg);
     locationDisplay.textContent = 'Location unavailable';
+    
+    // Show manual location form
+    manualLocationForm.style.display = 'block';
 }
 
 // Update UI with sun data
