@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3498db">
+    <title>SunTime - Sunrise & Sunset Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>SunTime</h1>
+            <p class="tagline">Track the sun's journey</p>
+        </header>
+        
+        <main>
+            <div class="location-info">
+                <div id="location-display">Detecting location...</div>
+                <button id="refresh-location" aria-label="Refresh location">
+                    <span class="icon">↻</span>
+                </button>
+            </div>
+            
+            <div class="card-container">
+                <div class="card sunrise">
+                    <div class="card-icon">🌅</div>
+                    <h2>Sunrise</h2>
+                    <div id="sunrise-time" class="time">--:--</div>
+                    <div id="sunrise-info" class="info"></div>
+                </div>
+                
+                <div class="card sunset">
+                    <div class="card-icon">🌇</div>
+                    <h2>Sunset</h2>
+                    <div id="sunset-time" class="time">--:--</div>
+                    <div id="sunset-info" class="info"></div>
+                </div>
+            </div>
+            
+            <div class="day-length">
+                <h3>Day Length</h3>
+                <div id="day-length">--:--</div>
+            </div>
+            
+            <div class="loading-indicator" id="loading">
+                <div class="spinner"></div>
+                <p>Loading Python environment...</p>
+            </div>
+            
+            <div class="error-message" id="error-message"></div>
+        </main>
+        
+        <footer>
+            <p>Data calculated using Python with Pyodide</p>
+            <button id="install-button" class="install-button" style="display: none;">Install App</button>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(reg => console.log('Service worker registered', reg))
+                .catch(err => console.error('Service worker registration failed', err));
+        }
+    </script>
+</body>
+</html>
