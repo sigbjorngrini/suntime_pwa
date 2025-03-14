@@ -148,7 +148,7 @@ async function useSearchResult(location) {
         const longitude = parseFloat(location.lon);
         const locationName = location.display_name.split(',')[0];
         
-        // Display location name and coordinates
+        // Display location name and coordinates with more emphasis
         locationDisplay.textContent = `${locationName} (${latitude.toFixed(4)}°, ${longitude.toFixed(4)}°)`;
         
         // Call Python function to calculate sun times
@@ -313,7 +313,7 @@ function removeRecentLocation(index) {
 
 async function useRecentLocation(location) {
     try {
-        // Display location name and coordinates
+        // Display location name and coordinates with more emphasis
         locationDisplay.textContent = `${location.name} (${location.latitude.toFixed(4)}°, ${location.longitude.toFixed(4)}°)`;
         
         // Call Python function to calculate sun times
