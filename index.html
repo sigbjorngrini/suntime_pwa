@@ -26,16 +26,37 @@
             </div>
             
             <div id="manual-location-form" class="manual-location-form" style="display: none;">
-                <h3>Enter Location Manually</h3>
-                <div class="form-group">
-                    <label for="latitude">Latitude:</label>
-                    <input type="number" id="latitude" step="0.0001" placeholder="e.g. 40.7128">
+                <h3>Enter Location</h3>
+                
+                <div class="tabs">
+                    <button id="tab-coordinates" class="tab-button active">Coordinates</button>
+                    <button id="tab-search" class="tab-button">Search</button>
                 </div>
-                <div class="form-group">
-                    <label for="longitude">Longitude:</label>
-                    <input type="number" id="longitude" step="0.0001" placeholder="e.g. -74.0060">
+                
+                <div id="coordinates-form" class="tab-content">
+                    <div class="form-group">
+                        <label for="latitude">Latitude:</label>
+                        <input type="number" id="latitude" step="0.0001" placeholder="e.g. 40.7128">
+                    </div>
+                    <div class="form-group">
+                        <label for="longitude">Longitude:</label>
+                        <input type="number" id="longitude" step="0.0001" placeholder="e.g. -74.0060">
+                    </div>
+                    <button id="submit-location" type="button">Calculate</button>
                 </div>
-                <button id="submit-location" type="button">Calculate</button>
+                
+                <div id="search-form" class="tab-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="location-search">Location Name:</label>
+                        <input type="text" id="location-search" placeholder="e.g. New York, Paris, Tokyo">
+                    </div>
+                    <button id="search-location" type="button">Search</button>
+                    
+                    <div id="search-results" class="search-results" style="display: none;">
+                        <h4>Search Results:</h4>
+                        <ul id="results-list"></ul>
+                    </div>
+                </div>
             </div>
             
             <div class="card-container">
